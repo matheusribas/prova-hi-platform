@@ -22,14 +22,14 @@ export function Node({ node }: NodeProps) {
     Object.entries(node).map(([, nodeCurrent]) => {
       return (
         <ul key={nodeCurrent.id} className="w-full bg-slate-700 hover:bg-slate-700/70 first:rounded-t last:rounded-b overflow-hidden">
-          <li className="flex justify-between items-center gap-4 border-b border-slate-600">
+          <li className="flex justify-between items-center gap-4 border-b border-l border-slate-600">
             <div className="flex gap-4 flex-1 items-center">
               <input id={nodeCurrent.id} type="checkbox" className="accent-green-500 w-4 h-4 ml-4" />
               <label htmlFor={nodeCurrent.id} className="font-semibold flex-1 py-4 cursor-pointer">{nodeCurrent.name}</label>
             </div>
             {(!!Object.keys(nodeCurrent.children).length) && (
               <button 
-                className="pr-4 flex-1 flex justify-end"
+                className="pr-4 py-4 flex-1 flex justify-end"
                 onClick={_ => handleToggleAccordion(nodeCurrent.id)}
               >
                 <ChevronDown 
