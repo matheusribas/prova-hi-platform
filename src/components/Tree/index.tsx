@@ -1,28 +1,11 @@
-import { useEffect, useState } from "react";
-
-import { data } from '../../api/data.ts';
-import { DataType } from "../../types/DataType";
-import { getItemLocalStorage } from "../../utils/localStorege.ts";
-
 import { Node } from "../Node";
 import { Error } from "../Error";
 import { Loading } from "../Loading/index.tsx";
 import { StatusCheckboxProvider } from "../../context/StatusCheckbox.tsx";
+import { useNodes } from "../../hooks/useNodes.tsx";
 
 export function Tree() {
-  const [nodes, setNodes] = useState<DataType>({})
-  const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    setIsLoading(true)
-    setTimeout(() => {
-      const nodesLocalStorege = getItemLocalStorage<DataType>("@hi-platform:nodes", true)
-      const currentData = nodesLocalStorege ?? data
-  
-      setNodes(currentData)
-      setIsLoading(false)
-    }, 500)
-  }, [])
+  const { nodes, isLoading } = useNodes()
 
   const isEmpytNodes = !Object.values(nodes).length
 

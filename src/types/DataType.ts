@@ -6,3 +6,8 @@ export interface Data {
 }
 
 export type DataType = {[key:string]: Data}
+
+export interface DataContextType {
+  nodes: DataType,
+  isLoading: boolean
+}
