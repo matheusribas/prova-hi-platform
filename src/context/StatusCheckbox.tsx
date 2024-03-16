@@ -64,23 +64,31 @@ export function StatusCheckboxProvider({ children }: StatusCheckboxProvider) {
 
       function setStatusOfParent(parentNodeId: string, brothersIds: string[]) {
         const allStatusUpdated = { ...updatedStatusCheckbox, ...statusUpdated }
-        let countTtlBrothersChecked = 0
+        let countTtlBrothersCheckedFind = 0
+        let countTtlBrothersIndeterminateFind = 0
 
         Object.entries(allStatusUpdated).forEach(([nodeId, status]) => {
-          if (status.checked && !status.indeterminate) {
+          if (status.checked && !status.indeterminate) { 
             if (brothersIds.indexOf(nodeId) !== -1) {
-              countTtlBrothersChecked++
+              countTtlBrothersCheckedFind++
+            }
+          } else if (status.indeterminate) {
+            if (brothersIds.indexOf(nodeId) !== -1) {
+              countTtlBrothersIndeterminateFind++
             }
           }
         })
 
-        const allBrotherAreChecked = countTtlBrothersChecked === brothersIds.length
-        const someBrotherAreChecked = countTtlBrothersChecked !== 0 && countTtlBrothersChecked < brothersIds.length
-        const noneBrotherAreChecked = countTtlBrothersChecked === 0
+        const allBrotherAreChecked = countTtlBrothersCheckedFind === brothersIds.length
+        const someBrotherAreChecked = countTtlBrothersCheckedFind !== 0 && countTtlBrothersCheckedFind < brothersIds.length
+        const noneBrotherAreChecked = countTtlBrothersCheckedFind === 0
 
-        statusUpdated[parentNodeId] = { 
-          checked: allBrotherAreChecked && !noneBrotherAreChecked, 
-          indeterminate: someBrotherAreChecked && !noneBrotherAreChecked
+        if (allBrotherAreChecked) {
+          statusUpdated[parentNodeId] = { checked: true, indeterminate: false }
+        } else if (someBrotherAreChecked || countTtlBrothersIndeterminateFind !== 0) {
+          statusUpdated[parentNodeId] = { checked: false, indeterminate: true }
+        } else if (noneBrotherAreChecked) {
+          statusUpdated[parentNodeId] = { checked: false, indeterminate: false }
         }
       }
 
