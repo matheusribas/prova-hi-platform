@@ -16,7 +16,7 @@ export function NodeProvider({ children }: NodeProvider) {
   useEffect(() => {
     setIsLoading(true)
     setTimeout(() => {
-      const nodesLocalStorege = getItemLocalStorage<DataType>("@hi-platform:nodes", true)
+      const nodesLocalStorege = getItemLocalStorage<DataType>({ item: "@hi-platform:nodes", isJSON: true })
       const currentData = nodesLocalStorege ?? data
   
       setNodes(currentData)

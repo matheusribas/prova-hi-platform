@@ -9,7 +9,7 @@ interface InputProps {
 
 export function Input({ nodeCurrent, handleChange }: InputProps) {
 
-  const { statusCheckbox, setDefaultStatusCheckbox } = useStatusCheckbox()
+  const { statusCheckbox } = useStatusCheckbox()
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -21,10 +21,6 @@ export function Input({ nodeCurrent, handleChange }: InputProps) {
       inputRef.current.indeterminate = false
     }
   }, [inputRef, nodeCurrent, statusCheckbox])
-
-  useEffect(() => {
-    setDefaultStatusCheckbox(nodeCurrent.id)
-  }, [])
 
   return (
     <div className="flex gap-4 flex-1 items-center">

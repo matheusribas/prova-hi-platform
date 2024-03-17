@@ -1,14 +1,14 @@
-type itemsLocalStorege = '@hi-platform:nodes'
+type itemsLocalStorege = '@hi-platform:nodes' | '@hi-platform:checkboxes'
 
-type setItem = (item: itemsLocalStorege, value: string) => void
+type setItem = ({ item, value }: { item: itemsLocalStorege, value: string }) => void
 
-type getItem = <T>(item: itemsLocalStorege, isJSON?: boolean) => T
+type getItem = <T>({ item, isJSON }: { item: itemsLocalStorege, isJSON?: boolean }) => T
 
-const setItemLocalStorage: setItem = (item, value) => {
+const setItemLocalStorage: setItem = ({item, value}) => {
   localStorage.setItem(item, value)
 }
 
-const getItemLocalStorage : getItem = (item, isJSON = false) => {
+const getItemLocalStorage : getItem = ({item, isJSON = false}) => {
   let items = localStorage.getItem(item)
   
   if (!isJSON) {

@@ -2,20 +2,21 @@ import { ReactNode, createContext, useEffect, useState } from "react";
 import { StatusCheckboxContextType, StatusCheckboxType, TypeFunctionChangeCheckbox } from "../types/StatusCheckboxType";
 import { DataType } from "../types/DataType";
 import { useNodes } from "../hooks/useNodes";
+import { getItemLocalStorage, setItemLocalStorage } from "../utils/localStorege";
 
 interface StatusCheckboxProvider {
   children: ReactNode
 }
-type parentsIdsWithChildrenType = {
+type ParentsIdsWithChildrenType = {
   [nodeParentId: string]: {
     childrensIds: string[],
     brothersIds: string[]
   }
 }
 
-interface findParentNodeType {
+interface FindParentNodeType {
   childNodeId: string, 
-  parentsIds: parentsIdsWithChildrenType, 
+  parentsIds: ParentsIdsWithChildrenType, 
   brothersIds: string[]
 }
 
@@ -23,17 +24,14 @@ export const StatusCheckboxContext = createContext<StatusCheckboxContextType | u
 
 export function StatusCheckboxProvider({ children }: StatusCheckboxProvider) {
   const [statusCheckbox, setStatusCheckbox] = useState<StatusCheckboxType>({})
-  const [parentsIdsWithChildren, setParentsIdsWithChildren] = useState<parentsIdsWithChildrenType>({})
+  const [parentsIdsWithChildren, setParentsIdsWithChildren] = useState<ParentsIdsWithChildrenType>({})
   const { nodes } = useNodes()
 
-  function setDefaultStatusCheckbox(nodeId: string) {
-    setStatusCheckbox(prev => ({ 
-      ...prev, 
-      [nodeId]: { 
-        checked: false, 
-        indeterminate: false 
-      } 
-    }))
+  function setDefaultStatusCheckbox(statusCheckboxes: StatusCheckboxType) {
+    const checkboxesLocalStorege = getItemLocalStorage<StatusCheckboxType>({ item: "@hi-platform:checkboxes", isJSON: true })
+    const currentCheckboxes = checkboxesLocalStorege ?? statusCheckboxes
+
+    setStatusCheckbox(currentCheckboxes)
   }
 
   function onChangeStatusCheckbox({ nodeCurrent, brothers }: TypeFunctionChangeCheckbox) {
@@ -92,7 +90,7 @@ export function StatusCheckboxProvider({ children }: StatusCheckboxProvider) {
         }
       }
 
-      function findParentNode({ childNodeId, parentsIds, brothersIds }: findParentNodeType) {
+      function findParentNode({ childNodeId, parentsIds, brothersIds }: FindParentNodeType) {
         if (!!Object.values(parentsIds).length) {
           Object.entries(parentsIds).find(([parentNodeId, childNodesIds]) => {
             const isParentOfChild = childNodesIds?.childrensIds.length && childNodesIds?.childrensIds.indexOf(childNodeId) !== -1
@@ -116,36 +114,44 @@ export function StatusCheckboxProvider({ children }: StatusCheckboxProvider) {
         brothersIds: Object.values(brothers).map(node => node.id)
       })
 
-      return ({ 
-        ...updatedStatusCheckbox, 
-        ...statusUpdated
+      const updatedCheckboxes = { ...updatedStatusCheckbox, ...statusUpdated }
+      
+      setItemLocalStorage({
+        item: "@hi-platform:checkboxes", 
+        value: JSON.stringify(updatedCheckboxes)
       })
+
+      return updatedCheckboxes
     })
   }
 
   useEffect(() => {
-    const parents = {} as parentsIdsWithChildrenType
+    const parents = {} as ParentsIdsWithChildrenType
+    const defaultStatusOfCheckboxes = {} as StatusCheckboxType
 
-    function setParentNode(nodes: DataType) {
+    function setDefaultStatusAndParentNode(nodes: DataType) {
       const brothersNodesIds = Object.values(nodes).map(node => node.id)
       
       Object.entries(nodes).forEach(([, node]) => {
+        defaultStatusOfCheckboxes[node.id] = { checked: false, indeterminate: false }
+
         if (!!Object.values(node?.children).length) {
           parents[node.id] = {
             childrensIds: Object.entries(node?.children).map(([, node]) => node.id),
             brothersIds: brothersNodesIds
           }
-          setParentNode(node?.children)
+          setDefaultStatusAndParentNode(node?.children)
         }
       })
     }
-    setParentNode(nodes)
-    
+    setDefaultStatusAndParentNode(nodes)
+
+    setDefaultStatusCheckbox(defaultStatusOfCheckboxes)
     setParentsIdsWithChildren(parents)
   }, [nodes])
 
   return (
-    <StatusCheckboxContext.Provider value={{statusCheckbox, setDefaultStatusCheckbox, onChangeStatusCheckbox}}>
+    <StatusCheckboxContext.Provider value={{statusCheckbox, onChangeStatusCheckbox}}>
       {children}
     </StatusCheckboxContext.Provider>
   )
