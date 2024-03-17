@@ -18,10 +18,10 @@ export function Tree() {
   }
   
   return (
-    <div className="overflow-y-auto pr-2">
+    <ul className="overflow-y-auto shadow scrollbar-thin scrollbar-thumb-slate-500 scrollbar-track-slate-700">
       <StatusCheckboxProvider>
         <Node node={nodes} />
       </StatusCheckboxProvider>
-    </div>
+    </ul>
   )
 }
