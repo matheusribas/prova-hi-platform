@@ -28,34 +28,49 @@ export function Node({ node }: NodeProps) {
 
   return (
     Object.entries(node).map(([, nodeCurrent]) => {
-      return (
-        <ul key={nodeCurrent.id} className="w-full bg-slate-700 hover:bg-slate-700/70 first:rounded-t last:rounded-b overflow-hidden">
-          <li className="flex justify-between items-center gap-4 border-b border-l border-slate-600">
-            <Input
-              nodeCurrent={nodeCurrent}
-              handleChange={handleChange}
-            />
-            {(!!Object.keys(nodeCurrent.children).length) && (
-              <button 
-                className="pr-4 py-4 flex-1 flex justify-end"
-                onClick={_ => handleToggleAccordion(nodeCurrent.id)}
-              >
-                <ChevronDown 
-                  data-accordion={openAccordions[nodeCurrent.id] ? 'open' : 'closed'}
-                  className="transition-transform data-[accordion='open']:rotate-180" 
-                />
-              </button>
-            )}
-          </li>
-          {(Object.keys(nodeCurrent.children).length !== 0) && (
-            <li
+      const haveChildren = !!Object.keys(nodeCurrent.children).length
+
+      return (haveChildren ? (
+          <li
+            key={nodeCurrent.id} 
+            className="w-full bg-slate-700 hover:bg-slate-600/50 first:rounded-t last:rounded-b overflow-hidden data-[accordion='open']:bg-slate-600/50"
+            data-accordion={openAccordions[nodeCurrent.id] ? 'open' : 'closed'}
+          >
+            <div className="flex justify-between items-center gap-4 border-b border-l border-slate-600">
+              <Input
+                nodeCurrent={nodeCurrent}
+                handleChange={handleChange}
+              />
+              {(!!Object.keys(nodeCurrent.children).length) && (
+                <button 
+                  className="pr-4 py-4 flex-1 flex justify-end"
+                  onClick={_ => handleToggleAccordion(nodeCurrent.id)}
+                >
+                  <ChevronDown 
+                    data-accordion={openAccordions[nodeCurrent.id] ? 'open' : 'closed'}
+                    className="transition-transform data-[accordion='open']:rotate-180" 
+                  />
+                </button>
+              )}
+            </div>
+            <ul
               className="pl-8 max-h-0 data-[accordion='open']:max-h-full"
               data-accordion={openAccordions[nodeCurrent.id] ? 'open' : 'closed'}
             >
               <Node node={nodeCurrent.children} />
-            </li>
-          )}
-        </ul>
+            </ul>
+          </li>
+        ) : (
+          <li 
+            key={nodeCurrent.id} 
+            className="flex justify-between items-center gap-4 border-b border-l border-slate-600 bg-slate-700 hover:bg-slate-600/50 overflow-hidden"
+          >
+            <Input
+              nodeCurrent={nodeCurrent}
+              handleChange={handleChange}
+            />
+          </li>
+        )
       )
     })
   )
