@@ -1,14 +1,19 @@
 import '@testing-library/jest-dom';
+import { ReactNode } from 'react';
 import { act, render, waitFor } from "@testing-library/react";
 import userEvent from '@testing-library/user-event';
+
 import { Node } from "../../components/Node";
 import { DataType } from '../../types/DataType';
 import { StatusCheckboxType } from '../../types/StatusCheckboxType';
-import { ReactNode } from 'react';
 import { NodeProvider } from '../../context/Nodes';
 import { StatusCheckboxProvider } from '../../context/StatusCheckbox';
 
 describe("<Node />", () => {
+  function delay(time: number) {
+    return new Promise(resolve => setTimeout(() => resolve(true), time))
+  }
+
   const wrapper = ({ children }: { children: ReactNode }) => (
     <NodeProvider>
       <StatusCheckboxProvider>
@@ -143,13 +148,41 @@ describe("<Node />", () => {
     const inputCheckboxChild2 = getByRole("checkbox", { name: `checkbox-${child2Id}` })
     const inputCheckboxParent = getByRole("checkbox", { name: `checkbox-${parentId}` })
 
-    act(() => {
-      userEvent.click(inputCheckboxChild1);
-      userEvent.click(inputCheckboxChild2);
-    })
+    await act(async () => await delay(1000))
 
-    await waitFor(() => {
-      expect(inputCheckboxParent).toBeChecked()
-    });
+    userEvent.click(inputCheckboxChild1)
+    userEvent.click(inputCheckboxChild2)
+
+    await waitFor(() => expect(inputCheckboxParent).toBeChecked());
+  })
+  
+  it("should change the indeterminate status of the parent's checkbox to true when some children checked status are true" , async () => {
+    const { getByRole } = render(<Node node={nodes} />, { wrapper })
+    const parentId = 'test-1'
+    const child1Id = 'test-child-1'
+    
+    const inputCheckboxChild1 = getByRole("checkbox", { name: `checkbox-${child1Id}` })
+    const inputCheckboxParent = getByRole("checkbox", { name: `checkbox-${parentId}` })
+    
+    await act(async () => await delay(1000))
+
+    userEvent.click(inputCheckboxChild1)
+    
+    await waitFor(() => expect(inputCheckboxParent).toBePartiallyChecked());
+  })
+  
+  it("should change the indeterminate status of the parent's checkbox to true when some children indeterminate status are true" , async () => {
+    const { getByRole } = render(<Node node={nodes} />, { wrapper })
+    const parentId = 'test-1'
+    const grandchild = "test-grandchild-1"
+    
+    await act(async () => await delay(1000))
+
+    const inputCheckboxGrandchild = getByRole("checkbox", { name: `checkbox-${grandchild}` })
+    const inputCheckboxParent = getByRole("checkbox", { name: `checkbox-${parentId}` })
+
+    userEvent.click(inputCheckboxGrandchild)
+        
+    await waitFor(() => expect(inputCheckboxParent).toBePartiallyChecked());
   })
 })
