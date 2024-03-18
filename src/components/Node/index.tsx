@@ -42,9 +42,10 @@ export function Node({ node }: NodeProps) {
                 handleChange={handleChange}
               />
               <button 
-                className="pr-4 py-4 flex-1 flex justify-end"
+                className="pr-4 py-4 flex-1 flex justify-end data-[accordion='open']:text-green-500"
                 onClick={_ => handleToggleAccordion(nodeCurrent.id)}
                 aria-label={`buttonOpenAccordion-${nodeCurrent.id}`}
+                data-accordion={openAccordions[nodeCurrent.id] ? 'open' : 'closed'}
               >
                 <ChevronDown 
                   data-accordion={openAccordions[nodeCurrent.id] ? 'open' : 'closed'}
