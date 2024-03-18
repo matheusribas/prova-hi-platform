@@ -1,5 +1,45 @@
-
 # HiPlatform Desafio de Frontend
+
+## Resultado final
+![myTree](https://github.com/matheusribas/prova-hi-platform/assets/71330464/a658dd3b-9089-474c-8905-831b76001c2e)
+
+## :hammer: Funcionalidades do projeto
+
+- `Funcionalidade 1`: Cada item deve ter um checkbox que pode ser marcado/desmarcado.
+- `Funcionalidade 2`: O usuário pode mostrar e esconder os itens internos de um item pai.
+- `Funcionalidade 3`: Ao marcar/desmarcar o checkbox de um item que tenha filhos, o estado sera cascateado a todos os seus descendentes. 
+- `Funcionalidade 4`: Ao marcar/desmarcar todos os filhos, o estado do checkbox pai ira replicar o dos filhos.
+- `Funcionalidade 5`: Ao marcar algum filho, o estado do checkbox pai sera alterado para `indeterminate`, até que todos os filhos sejam marcardos.
+- `Funcionalidade 6`: Os estados dos checkboxes serão persistidos caso a página seja recarregada.
+
+## ✔ Tecnologias utilizadas
+
+- `ReactJS`
+- `TypeScript`
+- `Tailwind`
+- `Jest`
+- `Testing Library`
+- `Vite`
+
+## ⚙ Como instalar, rodar e testar o projeto
+- Execute o comando para clonar o projeto:
+```
+git clone https://github.com/matheusribas/prova-hi-platform.git
+```
+- Execute o comando para instalar as dependencias do projeto:
+```
+npm install
+```
+- Execute o comando para rodar o projeto:
+```
+npm run dev
+```
+- Execute o comando para testar o projeto:
+```
+npm test
+```
+
+# O Desafio
 
 No nosso exercício de frontend, pedimos que você implemente uma simples árvore de itens, na qual cada item pode ter vários itens encadeados (itens filhos), conforme o exemplo abaixo:
 
