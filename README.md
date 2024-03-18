@@ -1,14 +1,15 @@
 # HiPlatform Desafio de Frontend
 
 ## Resultado final
-![myTree](https://github.com/matheusribas/prova-hi-platform/assets/71330464/a658dd3b-9089-474c-8905-831b76001c2e)
+![myTree](https://github.com/matheusribas/prova-hi-platform/assets/71330464/cdb7e798-d0b2-46ff-9b30-37f78ac901bf)
+
 
 ## :hammer: Funcionalidades do projeto
 
-- `Funcionalidade 1`: Cada item deve ter um checkbox que pode ser marcado/desmarcado.
+- `Funcionalidade 1`: O usuário pode marcar/desmarcar cada item através de um checkbox.
 - `Funcionalidade 2`: O usuário pode mostrar e esconder os itens internos de um item pai.
-- `Funcionalidade 3`: Ao marcar/desmarcar o checkbox de um item que tenha filhos, o estado sera cascateado a todos os seus descendentes. 
-- `Funcionalidade 4`: Ao marcar/desmarcar todos os filhos, o estado do checkbox pai ira replicar o dos filhos.
+- `Funcionalidade 3`: Ao marcar/desmarcar o checkbox de um item que tenha filhos, o estado será propagado para todos os seus descendentes.
+- `Funcionalidade 4`: Ao marcar/desmarcar todos os filhos, o estado do checkbox pai irá replicar o dos filhos.
 - `Funcionalidade 5`: Ao marcar algum filho, o estado do checkbox pai sera alterado para `indeterminate`, até que todos os filhos sejam marcardos.
 - `Funcionalidade 6`: Os estados dos checkboxes serão persistidos caso a página seja recarregada.
 
@@ -26,9 +27,9 @@
 ```
 git clone https://github.com/matheusribas/prova-hi-platform.git
 ```
-- Execute o comando para instalar as dependencias do projeto:
+- Execute o comando para entrar no diretório e instalar as dependências do projeto:
 ```
-npm install
+cd prova-hi-platform ; npm install
 ```
 - Execute o comando para rodar o projeto:
 ```
