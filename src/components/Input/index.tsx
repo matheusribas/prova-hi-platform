@@ -25,14 +25,15 @@ export function Input({ nodeCurrent, handleChange }: InputProps) {
   return (
     <div className="flex gap-4 flex-1 items-center">
       <input 
-        id={nodeCurrent.id} 
+        id={`checkbox-${nodeCurrent.id}`}
         type="checkbox" 
         ref={inputRef}
         className="accent-green-500 w-4 h-4 ml-4"
         checked={!!statusCheckbox[nodeCurrent.id]?.checked}
         onChange={_ => handleChange(nodeCurrent)}
+        aria-label={`checkbox-${nodeCurrent.id}`}
       />
-      <label htmlFor={nodeCurrent.id} className="font-semibold flex-1 py-4 cursor-pointer">{nodeCurrent.name}</label>
+      <label htmlFor={`checkbox-${nodeCurrent.id}`} className="font-semibold flex-1 py-4 cursor-pointer">{nodeCurrent.name}</label>
     </div>
   )
 }

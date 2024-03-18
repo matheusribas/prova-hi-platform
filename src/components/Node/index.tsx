@@ -41,20 +41,20 @@ export function Node({ node }: NodeProps) {
                 nodeCurrent={nodeCurrent}
                 handleChange={handleChange}
               />
-              {(!!Object.keys(nodeCurrent.children).length) && (
-                <button 
-                  className="pr-4 py-4 flex-1 flex justify-end"
-                  onClick={_ => handleToggleAccordion(nodeCurrent.id)}
-                >
-                  <ChevronDown 
-                    data-accordion={openAccordions[nodeCurrent.id] ? 'open' : 'closed'}
-                    className="transition-transform data-[accordion='open']:rotate-180" 
-                  />
-                </button>
-              )}
+              <button 
+                className="pr-4 py-4 flex-1 flex justify-end"
+                onClick={_ => handleToggleAccordion(nodeCurrent.id)}
+                aria-label={`buttonOpenAccordion-${nodeCurrent.id}`}
+              >
+                <ChevronDown 
+                  data-accordion={openAccordions[nodeCurrent.id] ? 'open' : 'closed'}
+                  className="transition-transform data-[accordion='open']:rotate-180" 
+                />
+              </button>
             </div>
             <ul
-              className="pl-8 max-h-0 data-[accordion='open']:max-h-full"
+              className="pl-8 hidden data-[accordion='open']:block"
+              data-testid={`listCheckboxesChild-${nodeCurrent.id}`}
               data-accordion={openAccordions[nodeCurrent.id] ? 'open' : 'closed'}
             >
               <Node node={nodeCurrent.children} />

@@ -11,7 +11,7 @@ jest.mock('../../hooks/useNodes', () => {
 });
 
 describe("<Tree />", () => {
-  it("should render the node", () => {
+  it("should render the tree with one node", () => {
     jest
       .spyOn(useNodes, 'useNodes')
       .mockReturnValue({
